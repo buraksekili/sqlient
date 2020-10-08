@@ -19,8 +19,10 @@
 
 const mysql = require("mysql");
 
-const establishConnection = (host, user, password, database, query) => {
-  console.log(`${host} ${user} ${password} ${database}`);
+const establishConnection = (
+  { host, user, password, database, query },
+  callback
+) => {
   connectionConfig = {
     host: "localhost",
     user: "root",
@@ -28,36 +30,31 @@ const establishConnection = (host, user, password, database, query) => {
     database: "mysqldb",
     multipleStatements: true,
   };
+
   const connection = mysql.createConnection(connectionConfig);
 
   connection.connect((err) => {
     if (err) {
-      handleErrors(err);
+      callback(new Error(err.message), undefined);
       return;
     }
-    alert("Connected!");
+    if (!query) {
+      callback(null, { status: true, tables: undefined });
+    }
   });
 
+  // If query is not specified.
   if (!query) return;
-  connection.query(query, function (err, result) {
+  connection.query(query, (err, result) => {
     if (err) {
-      handleErrors(err);
+      callback(new Error(err.message), undefined);
       return;
     }
-    console.log("1 record inserted");
+    const tables = result[1].map((table) => table.Tables_in_mysqldb);
+    callback(null, { status: true, tables });
   });
-};
 
-const handleErrors = (err) => {
-  if (err) {
-    console.log(JSON.stringify(err, undefined, 2));
-    alert("Failed to connect DB");
-    return;
-  }
-};
-
-const displayTables = () => {
-  const displayingTable = "SHOW TABLES;";
+  connection.end();
 };
 
 module.exports = establishConnection;
