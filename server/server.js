@@ -14,7 +14,21 @@ app.post("/tables", (req, res) => {
         res.send(error.message);
         return;
       }
+      res.send(result);
+    }
+  );
+});
 
+app.post("/table", (req, res) => {
+  const { host, user, password, database, table } = req.body.data;
+  const query = `SELECT * FROM ${table}`;
+  establishConnection(
+    { host, user, password, database, query },
+    (error, result) => {
+      if (error) {
+        res.send(error.message);
+        return;
+      }
       res.send(result);
     }
   );

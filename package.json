@@ -13,12 +13,14 @@
   "license": "ISC",
   "dependencies": {
     "@material-ui/core": "^4.11.0",
+    "@material-ui/data-grid": "^4.0.0-alpha.6",
     "axios": "^0.20.0",
     "electron": "^10.1.2",
     "electron-reloader": "^1.0.1",
     "mysql": "^2.18.1",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "react-flexy-table": "^1.2.4"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",

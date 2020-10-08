@@ -50,8 +50,18 @@ const establishConnection = (
       callback(new Error(err.message), undefined);
       return;
     }
-    const tables = result[1].map((table) => table.Tables_in_mysqldb);
-    callback(null, { status: true, tables });
+    if (query.includes("SHOW TABLES")) {
+      const tables = result[1].map((table) => table.Tables_in_mysqldb);
+      callback(null, { status: true, tables });
+    } else {
+      const res = [];
+      result.forEach((element) => {
+        console.log(element);
+        res.push(element);
+        return element;
+      });
+      callback(null, { status: true, table_content: res });
+    }
   });
 
   connection.end();
