@@ -1,13 +1,51 @@
 
-.connection-form-div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+* {
+    font-family: 'Roboto', sans-serif;
 }
 
-.query-form {
-    display: flex;   
-}
 .my-table > tfoot {
-    display: none !important;
+    /* display: none !important; */
+}
+
+.rft-pagination {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.table-link {
+    font-size: 20px;
+    color: #626d70;
+}
+
+.table-content {
+    margin-left: 2em;
+}
+
+.table-link:hover {
+    font-size: 20px;
+    color: #247186;
+}
+
+:root {
+    --rft-main-color: #76aab9 !important;
+    --rft-button-color: #76aab9 !important;
+    --rft-even-row-color: #f3f3f3 !important;
+}
+
+.rft-table thead th:hover {
+    background-color: #76aab9 !important;
+}
+
+.rft-table tbody tr:hover {
+background-color: #76aab9 !important;
+
+}
+
+._1OmBB tbody tr:hover {
+color: blue !important;
+}
+
+._1OmBB thead th:hover {
+    background-color: rgba(0, 0, 0, 0.2) !important;
 }

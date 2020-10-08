@@ -3,6 +3,7 @@ import { ConnectionContext } from "./ConnectionContext";
 import ConnectionForm from "./ConnectionForm";
 import QueryForm from "./QueryForm";
 import { ResponseContext, TableContext } from "./ResponseContext";
+import "./style.css";
 import Summary from "./Summary";
 
 export default function App() {

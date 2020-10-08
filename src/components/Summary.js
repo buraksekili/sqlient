@@ -8,7 +8,7 @@ import Tables from "./Tables";
 const Summary = () => {
   return (
     <div>
-      <Box display="flex" flexDirection="row" p={1} m={1}>
+      <Box display="flex" flexDirection="row"  m={1}>
         <Tables />
         <TableContent />
       </Box>
