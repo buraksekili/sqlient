@@ -1,0 +1,11 @@
+
+.connection-form-div {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.query-form {
+    display: flex;   
+}
