@@ -4,7 +4,6 @@ import "react-flexy-table/dist/index.css";
 import { TableContext } from "./ResponseContext";
 
 const TableContent = () => {
-  const [keys, setKeys] = useState(undefined);
   const { table } = useContext(TableContext);
 
   return (
