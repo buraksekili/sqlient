@@ -9,7 +9,16 @@ Therefore, webpack watches changings in React files to compile it into .js file 
 Electron uses the compiled React files. So, npm run watch is essential to use React in Electron.
 
 ## Setting up the local environment
-
+#### Dependencies
+Clone the repo and install dependencies;
+```
+git clone https://github.com/buraksekili/sqlient.git
+cd sqlient/
+npm install
+cd server/
+npm install
+```
+#### Run development
 ```
 npm run watch
 npm start
