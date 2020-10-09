@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import ReactFlexyTable from "react-flexy-table";
 import "react-flexy-table/dist/index.css";
 import { TableContext } from "./ResponseContext";
