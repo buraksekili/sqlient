@@ -4,6 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { ConnectionContext } from "./ConnectionContext";
+import LoadingSpinner from "./LoadingSpinner";
 import { ResponseContext } from "./ResponseContext";
 
 // MARGIN constant for ConnectionForm TextField.
@@ -12,11 +13,13 @@ const MARGIN = 8;
 export default function ConnectionForm() {
   const [url, setUrl] = useState("localhost");
   const [user, setUser] = useState("root");
-  const [password, setPassword] = useState("1234burak");
+  const [password, setPassword] = useState("123burak");
   const [dbName, setDbName] = useState("mysqldb");
+  const [isLoading, setIsLoading] = useState(undefined);
+  const [helper, setHelper] = useState(undefined);
 
-  const { response, setResponse } = useContext(ResponseContext);
-  const { connectionInfo, setConnectionInfo } = useContext(ConnectionContext);
+  const { setResponse } = useContext(ResponseContext);
+  const { setConnectionInfo } = useContext(ConnectionContext);
 
   const connectDb = () => {
     const data = { host: url, user, password, database: dbName };
@@ -24,9 +27,19 @@ export default function ConnectionForm() {
     axios
       .post("http://localhost:5000/tables", { data })
       .then((res) => {
+        if (res.data.error) {
+          setHelper(res.data.error);
+          setIsLoading(false);
+          return;
+        }
         setResponse(res.data);
+        setIsLoading(false);
+        setHelper("Successful");
       })
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        setIsLoading(false);
+        console.error(e);
+      });
   };
 
   return (
@@ -38,6 +51,7 @@ export default function ConnectionForm() {
           required
           id="con_url"
           label="URL"
+          helperText={helper && helper}
           onChange={(e) => setUrl(e.target.value)}
         />
         <TextField
@@ -65,10 +79,17 @@ export default function ConnectionForm() {
           label="DB NAME"
           onChange={(e) => setDbName(e.target.value)}
         />
-        <Button variant="contained" onClick={() => connectDb()}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            connectDb();
+            setIsLoading(true);
+          }}
+        >
           Check Db
         </Button>
       </Box>
+      {isLoading && <LoadingSpinner />}
     </div>
   );
 }

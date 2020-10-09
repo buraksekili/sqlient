@@ -13,8 +13,6 @@ const QueryForm = () => {
   const { connectionInfo } = useContext(ConnectionContext);
   const { response } = useContext(ResponseContext);
 
-  // insert into product (productName,productPrice, productStock) values ('yeni',20, 50)
-
   const executeQuery = () => {
     const data = { ...connectionInfo, query };
 
@@ -25,7 +23,7 @@ const QueryForm = () => {
           setHelper(res.data.error);
           return;
         } else if (res.data.status) {
-          setHelper("Executed!");
+          setHelper("Executed! Refresh table to see new data.");
         }
       })
       .catch((e) => console.log("eeee", e));
