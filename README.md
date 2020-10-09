@@ -17,8 +17,7 @@ cd server/
 node server.js
 ```
 
-![sqlient](https://user-images.githubusercontent.com/32663655/95561823-faa23680-0a23-11eb-97ae-161d789f2a24.PNG)
-
+![sqlientnew](https://user-images.githubusercontent.com/32663655/95562132-6be1e980-0a24-11eb-9e61-ff84f462b168.PNG)
 
 ### Inspiration
 
