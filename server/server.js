@@ -6,21 +6,20 @@ app.use(express.json());
 
 app.post("/tables", (req, res) => {
   let { host, user, password, database, query } = req.body.data;
-
   if (!query) {
     query = `use ${database}; SHOW TABLES;`;
   }
-
-  establishConnection(
-    { host, user, password, database, query },
-    (error, result) => {
+  const hostObj = { host, user, password, database, query };
+  establishConnection(hostObj, (error, result) => {
+    try {
       if (error) {
-        res.send(error.message);
+        console.log("ERROR:!");
+        res.set(401).send({ error: "Invalid credentials" });
         return;
       }
       res.send(result);
-    }
-  );
+    } catch (e) {}
+  });
 });
 
 app.post("/execute", (req, res) => {

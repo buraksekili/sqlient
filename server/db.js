@@ -1,41 +1,22 @@
-// https://www.sitepoint.com/using-node-mysql-javascript-client/
-
 // For client doesn't support authentication protocl errors:
 // https://stackoverflow.com/questions/50093144/mysql-8-0-client-does-not-support-authentication-protocol-requested-by-server
-// xecute the following query in MYSQL Workbench
-// ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'
-// Where root as your user localhost as your URL and password as your password
-// Then run this query to refresh privileges:
-// flush privileges;
-
-// Try connecting using node after you do so.
-// If that doesn't work, try it without @'localhost' part.
-
-// const connection = mysql.createConnection({
-//   host: "localhost",
-//   user: "root",
-//   password: "123burak",
-//   database: "mysqldb",
 
 const mysql = require("mysql");
 
-const establishConnection = (
-  { host, user, password, database, query },
-  callback
-) => {
+const establishConnection = (hostObj, callback) => {
+  const { host, user, password, database, query } = hostObj;
   connectionConfig = {
-    host: "localhost",
-    user: "root",
-    password: "123burak",
-    database: "mysqldb",
+    host,
+    user,
+    password,
+    database,
     multipleStatements: true,
   };
-
   const connection = mysql.createConnection(connectionConfig);
 
   connection.connect((err) => {
     if (err) {
-      callback(new Error(err.message), undefined);
+      callback(new Error("Invalid credentials"), undefined);
       return;
     }
     if (!query) {
@@ -56,7 +37,6 @@ const establishConnection = (
     } else {
       const res = [];
       result.forEach((element) => {
-        console.log(element);
         res.push(element);
         return element;
       });
@@ -69,18 +49,14 @@ const establishConnection = (
 
 const execQuery = (hostObj, callback) => {
   const { host, user, password, database, query } = hostObj;
-  // if (result.constructor.name == "OkPacket") {
-  //   console.log(result);
-  // }
+
   connectionConfig = {
-    host: "localhost",
-    user: "root",
-    password: "123burak",
-    database: "mysqldb",
+    host,
+    user,
+    password,
+    database,
     multipleStatements: true,
   };
-  console.log(`query working ...${query}`);
-
   const connection = mysql.createConnection(connectionConfig);
 
   connection.connect((err) => {
@@ -103,16 +79,9 @@ const execQuery = (hostObj, callback) => {
       return;
     }
     const res = [];
-    console.log("result: ", result);
     if (result.constructor.name == "OkPacket") {
       res.push(result);
-      console.log(result);
     }
-    // result.forEach((element) => {
-    //   console.log(element);
-    //   res.push(element);
-    //   return element;
-    // });
     callback(null, { status: true, table_content: res });
   });
 
