@@ -1,12 +1,16 @@
 const express = require("express");
-const establishConnection = require("./db");
+const { establishConnection, execQuery } = require("./db");
 
 const app = express();
 app.use(express.json());
 
 app.post("/tables", (req, res) => {
-  const { host, user, password, database } = req.body.data;
-  const query = `use ${database}; SHOW TABLES;`;
+  let { host, user, password, database, query } = req.body.data;
+
+  if (!query) {
+    query = `use ${database}; SHOW TABLES;`;
+  }
+
   establishConnection(
     { host, user, password, database, query },
     (error, result) => {
@@ -17,6 +21,18 @@ app.post("/tables", (req, res) => {
       res.send(result);
     }
   );
+});
+
+app.post("/execute", (req, res) => {
+  let { host, user, password, database, query } = req.body.data;
+  const hostObj = { host, user, password, database, query };
+  execQuery(hostObj, (error, result) => {
+    if (error) {
+      res.send({ error: error.message });
+      return;
+    }
+    res.send(result);
+  });
 });
 
 app.post("/table", (req, res) => {

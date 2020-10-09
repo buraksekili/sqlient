@@ -67,4 +67,56 @@ const establishConnection = (
   connection.end();
 };
 
-module.exports = establishConnection;
+const execQuery = (hostObj, callback) => {
+  const { host, user, password, database, query } = hostObj;
+  // if (result.constructor.name == "OkPacket") {
+  //   console.log(result);
+  // }
+  connectionConfig = {
+    host: "localhost",
+    user: "root",
+    password: "123burak",
+    database: "mysqldb",
+    multipleStatements: true,
+  };
+  console.log(`query working ...${query}`);
+
+  const connection = mysql.createConnection(connectionConfig);
+
+  connection.connect((err) => {
+    if (err) {
+      callback(new Error(err.message), undefined);
+      return;
+    }
+    if (!query) {
+      callback(null, { status: true, tables: undefined });
+    }
+  });
+
+  if (!query) {
+    callback(new Error("Invalid query"), undefined);
+    return;
+  }
+  connection.query(query, (err, result) => {
+    if (err) {
+      callback(new Error("Invalid query"), undefined);
+      return;
+    }
+    const res = [];
+    console.log("result: ", result);
+    if (result.constructor.name == "OkPacket") {
+      res.push(result);
+      console.log(result);
+    }
+    // result.forEach((element) => {
+    //   console.log(element);
+    //   res.push(element);
+    //   return element;
+    // });
+    callback(null, { status: true, table_content: res });
+  });
+
+  connection.end();
+};
+
+module.exports = { establishConnection, execQuery };
