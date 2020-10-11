@@ -4,16 +4,17 @@ const { establishConnection, execQuery } = require("./db");
 const app = express();
 app.use(express.json());
 
+// Returns all tables available on database
 app.post("/tables", (req, res) => {
   let { host, user, password, database, query } = req.body.data;
   if (!query) {
-    query = `use ${database}; SHOW TABLES;`;
+    query = `SHOW TABLES`;
   }
+
   const hostObj = { host, user, password, database, query };
   establishConnection(hostObj, (error, result) => {
     try {
       if (error) {
-        console.log("ERROR:!");
         res.set(401).send({ error: "Invalid credentials" });
         return;
       }
@@ -22,6 +23,7 @@ app.post("/tables", (req, res) => {
   });
 });
 
+// Executes query on database
 app.post("/execute", (req, res) => {
   let { host, user, password, database, query } = req.body.data;
   const hostObj = { host, user, password, database, query };
@@ -34,19 +36,22 @@ app.post("/execute", (req, res) => {
   });
 });
 
+// shows content of selected table
 app.post("/table", (req, res) => {
   const { host, user, password, database, table } = req.body.data;
-  const query = `SELECT * FROM ${table}`;
-  establishConnection(
-    { host, user, password, database, query },
-    (error, result) => {
-      if (error) {
-        res.send(error.message);
-        return;
-      }
-      res.send(result);
+
+  // Initialize query with tmp value, if there is no query indicated
+  // server returns error.
+  const query = "tmp";
+
+  const hostObj = { host, user, password, database, query, table };
+  establishConnection(hostObj, (error, result) => {
+    if (error) {
+      res.send(error.message);
+      return;
     }
-  );
+    res.send(result);
+  });
 });
 
 const port = process.env.PORT || 5000;
